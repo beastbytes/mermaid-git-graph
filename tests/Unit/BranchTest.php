@@ -2,13 +2,18 @@
 
 use BeastBytes\Mermaid\GitGraph\Branch;
 
+defined('COMMENT') or define('COMMENT', 'comment');
+
 test('Branch test', function () {
     $branch = new Branch('hotfix');
 
     expect($branch->getName())
         ->toBe('hotfix')
         ->and($branch->render(''))
-        ->toBe('branch hotfix');
+        ->toBe('branch hotfix')
+        ->and($branch->withComment(COMMENT)->render(''))
+        ->toBe('%% ' . COMMENT . "\nbranch hotfix")
+    ;
 });
 
 test('Branch with order test', function () {

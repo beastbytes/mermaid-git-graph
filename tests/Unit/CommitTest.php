@@ -1,11 +1,9 @@
 <?php
 
-use BeastBytes\Mermaid\GitGraph\Branch;
-use BeastBytes\Mermaid\GitGraph\Checkout;
 use BeastBytes\Mermaid\GitGraph\Commit;
 use BeastBytes\Mermaid\GitGraph\CommitType;
-use BeastBytes\Mermaid\GitGraph\GitGraph;
-use BeastBytes\Mermaid\GitGraph\Merge;
+
+defined('COMMENT') or define('COMMENT', 'comment');
 
 test('Commit test', function () {
     expect((new Commit())->render(''))
@@ -20,5 +18,7 @@ test('Commit test', function () {
         ->toBe('commit tag:"beta_0.0.2"')
         ->and((new Commit('commitTag', 'beta_0.0.2', CommitType::Highlight))->render(''))
         ->toBe('commit id:"commitTag" type:HIGHLIGHT tag:"beta_0.0.2"')
+        ->and((new Commit())->withComment(COMMENT)->render(''))
+        ->toBe('%% ' . COMMENT . "\ncommit")
     ;
 });

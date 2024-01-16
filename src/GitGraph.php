@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\GitGraph;
 
+use BeastBytes\Mermaid\CommentTrait;
 use BeastBytes\Mermaid\Mermaid;
 use BeastBytes\Mermaid\MermaidInterface;
 use BeastBytes\Mermaid\RenderItemsTrait;
@@ -16,6 +17,7 @@ use Stringable;
 
 final class GitGraph implements MermaidInterface, Stringable
 {
+    use CommentTrait;
     use RenderItemsTrait;
     use TitleTrait;
 
@@ -25,7 +27,6 @@ final class GitGraph implements MermaidInterface, Stringable
     private array $items = [];
 
     public function __construct(
-        private readonly string $title = '',
         public readonly Direction $direction = Direction::LR
     )
     {
@@ -54,12 +55,10 @@ final class GitGraph implements MermaidInterface, Stringable
     {
         $output = [];
 
-        if ($this->title !== '') {
-            $output[] = $this->getTitle();
-        }
-
+        $this->renderTitle($output);
+        $this->renderComment('', $output);
         $output[] = self::TYPE . ' ' . $this->direction->name . ':';
-        $output[] = $this->renderItems($this->items, '');
+        $this->renderItems($this->items, '', $output);
 
         return Mermaid::render($output);
     }

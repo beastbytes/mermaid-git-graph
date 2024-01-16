@@ -8,10 +8,13 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\GitGraph;
 
+use BeastBytes\Mermaid\CommentTrait;
 use InvalidArgumentException;
 
 final class Branch implements ItemInterface
 {
+    use CommentTrait;
+
     private const TYPE = 'branch';
 
     public function __construct(private readonly string $name, private readonly ?int $order = null)
@@ -28,10 +31,15 @@ final class Branch implements ItemInterface
 
     public function render(string $indentation): string
     {
-        return $indentation
+        $output = [];
+
+        $this->renderComment($indentation, $output);
+        $output[] = $indentation
             . self::TYPE
             . ' ' . $this->name
             . ($this->order === null ? '' : ' order: ' . $this->order)
         ;
+
+        return implode("\n", $output);
     }
 }

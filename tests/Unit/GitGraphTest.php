@@ -2,14 +2,20 @@
 
 use BeastBytes\Mermaid\GitGraph\Branch;
 use BeastBytes\Mermaid\GitGraph\Checkout;
+use BeastBytes\Mermaid\GitGraph\Cherrypick;
 use BeastBytes\Mermaid\GitGraph\Commit;
 use BeastBytes\Mermaid\GitGraph\CommitType;
 use BeastBytes\Mermaid\GitGraph\GitGraph;
 use BeastBytes\Mermaid\GitGraph\Merge;
 
+defined('COMMENT') or define('COMMENT', 'comment');
+defined('TITLE') or define('TITLE', 'title');
+
 test('GitGraph test', function () {
     expect(
         (new GitGraph())
+            ->withTitle(TITLE)
+            ->withComment(COMMENT)
             ->withItem(
                 $commit = new Commit(),
                 $branchHotfix = new Branch('hotfix'),
@@ -17,7 +23,7 @@ test('GitGraph test', function () {
                 $commit,
                 $develop = new Branch('develop'),
                 $checkoutDevelop = new Checkout($develop),
-                new Commit('ash', 'abc'),
+                $ash = new Commit('ash', 'abc'),
                 $featureB = new Branch('featureB'),
                 $checkoutFeatureB = new Checkout($featureB),
                 new Commit(type: CommitType::Highlight),
@@ -36,6 +42,7 @@ test('GitGraph test', function () {
                 $featureA = new Branch('featureA'),
                 $commit,
                 $checkoutDevelop,
+                new Cherrypick($ash),
                 new Merge($branchHotfix),
                 new Checkout($featureA),
                 $commit,
@@ -56,6 +63,10 @@ test('GitGraph test', function () {
         ->render()
     )
         ->toBe("<pre class=\"mermaid\">\n"
+            . "---\n"
+            . 'title: ' . TITLE . "\n"
+            . "---\n"
+            . '%% ' . COMMENT . "\n"
             . "gitGraph LR:\n"
             . "  commit\n"
             . "  branch hotfix\n"
@@ -82,6 +93,7 @@ test('GitGraph test', function () {
             . "  branch featureA\n"
             . "  commit\n"
             . "  checkout develop\n"
+            . "  cherrypick id:&quot;ash&quot;\n"
             . "  merge hotfix\n"
             . "  checkout featureA\n"
             . "  commit\n"

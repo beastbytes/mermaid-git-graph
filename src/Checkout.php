@@ -8,8 +8,12 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\GitGraph;
 
+use BeastBytes\Mermaid\CommentTrait;
+
 final class Checkout implements ItemInterface
 {
+    use CommentTrait;
+
     private const TYPE = 'checkout';
 
     public function __construct(private readonly ?Branch $branch = null)
@@ -18,6 +22,11 @@ final class Checkout implements ItemInterface
 
     public function render(string $indentation): string
     {
-        return $indentation . self::TYPE . ' ' . ($this->branch === null ? 'main' : $this->branch->getName());
+        $output = [];
+
+        $this->renderComment($indentation, $output);
+        $output[] = $indentation . self::TYPE . ' ' . ($this->branch === null ? 'main' : $this->branch->getName());
+
+        return implode("\n", $output);
     }
 }

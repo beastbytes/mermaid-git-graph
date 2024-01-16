@@ -8,10 +8,13 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\GitGraph;
 
+use BeastBytes\Mermaid\CommentTrait;
 use RuntimeException;
 
 final class Commit implements ItemInterface
 {
+    use CommentTrait;
+
     private const TYPE = 'commit';
 
     public function __construct(
@@ -33,11 +36,16 @@ final class Commit implements ItemInterface
 
     public function render(string $indentation): string
     {
-        return $indentation
+        $output = [];
+
+        $this->renderComment($indentation, $output);
+        $output[] = $indentation
             . self::TYPE
             . ($this->id === '' ? '' : ' id:"' . $this->id . '"')
             . ($this->type === CommitType::Normal ? '' : ' type:' . $this->type->value)
             . ($this->tag === '' ? '' : ' tag:"' . $this->tag . '"')
         ;
+
+        return implode("\n", $output);
     }
 }
