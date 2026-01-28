@@ -1,27 +1,19 @@
 <?php
-/**
- * @copyright Copyright © 2024 BeastBytes - All rights reserved
- * @license BSD 3-Clause
- */
 
 declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\GitGraph;
 
 use BeastBytes\Mermaid\CommentTrait;
-use BeastBytes\Mermaid\Mermaid;
-use BeastBytes\Mermaid\MermaidInterface;
+use BeastBytes\Mermaid\Diagram;
 use BeastBytes\Mermaid\RenderItemsTrait;
-use BeastBytes\Mermaid\TitleTrait;
-use Stringable;
 
-final class GitGraph implements MermaidInterface, Stringable
+final class GitGraph extends Diagram
 {
     use CommentTrait;
     use RenderItemsTrait;
-    use TitleTrait;
 
-    private const TYPE = 'gitGraph';
+    private const string TYPE = 'gitGraph';
 
     /** @psalm-var list<ItemInterface> $items */
     private array $items = [];
@@ -30,11 +22,6 @@ final class GitGraph implements MermaidInterface, Stringable
         public readonly Direction $direction = Direction::LR
     )
     {
-    }
-
-    public function __toString(): string
-    {
-        return $this->render();
     }
 
     public function addItem(ItemInterface ...$item)
@@ -51,15 +38,14 @@ final class GitGraph implements MermaidInterface, Stringable
         return $new;
     }
 
-    public function render(array $attributes = []): string
+    protected function renderDiagram(): string
     {
         $output = [];
 
-        $this->renderTitle($output);
-        $this->renderComment('', $output);
+        $output[] = $this->renderComment('');
         $output[] = self::TYPE . ' ' . $this->direction->name . ':';
-        $this->renderItems($this->items, '', $output);
+        $output[] = $this->renderItems($this->items, '');
 
-        return Mermaid::render($output, $attributes);
+        return implode("\n", array_filter($output, fn($v) => !empty($v)));
     }
 }

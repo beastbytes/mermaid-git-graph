@@ -1,8 +1,4 @@
 <?php
-/**
- * @copyright Copyright © 2024 BeastBytes - All rights reserved
- * @license BSD 3-Clause
- */
 
 declare(strict_types=1);
 
@@ -15,7 +11,7 @@ final class Cherrypick implements ItemInterface
 {
     use CommentTrait;
 
-    private const TYPE = 'cherrypick';
+    private const string TYPE = 'cherrypick';
 
     public function __construct(private readonly Commit $commit)
     {
@@ -25,9 +21,9 @@ final class Cherrypick implements ItemInterface
     {
         $output = [];
 
-        $this->renderComment($indentation, $output);
+        $output[] = $this->renderComment($indentation);
         $output[] = $indentation . self::TYPE . ' id:"' . $this->commit->getId() . '"';
 
-        return implode("\n", $output);
+        return implode("\n", array_filter($output, fn($v) => !empty($v)));
     }
 }

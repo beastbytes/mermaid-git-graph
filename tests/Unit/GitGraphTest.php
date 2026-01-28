@@ -7,14 +7,13 @@ use BeastBytes\Mermaid\GitGraph\Commit;
 use BeastBytes\Mermaid\GitGraph\CommitType;
 use BeastBytes\Mermaid\GitGraph\GitGraph;
 use BeastBytes\Mermaid\GitGraph\Merge;
+use BeastBytes\Mermaid\Mermaid;
 
 defined('COMMENT') or define('COMMENT', 'comment');
 defined('TITLE') or define('TITLE', 'title');
 
 test('GitGraph test', function () {
-    expect(
-        (new GitGraph())
-            ->withTitle(TITLE)
+    expect(Mermaid::create(GitGraph::class, ['title' => TITLE])
             ->withComment(COMMENT)
             ->withItem(
                 $commit = new Commit(),
@@ -26,12 +25,12 @@ test('GitGraph test', function () {
                 $ash = new Commit('ash', 'abc'),
                 $featureB = new Branch('featureB'),
                 $checkoutFeatureB = new Checkout($featureB),
-                new Commit(type: CommitType::Highlight),
+                new Commit(type: CommitType::highlight),
                 $checkoutMain = new Checkout(),
                 $checkoutHotfix,
                 $commit,
                 new Checkout($develop),
-                new Commit(type: CommitType::Reverse),
+                new Commit(type: CommitType::reverse),
                 $checkoutFeatureB,
                 $commit,
                 $checkoutMain,
@@ -62,54 +61,56 @@ test('GitGraph test', function () {
             )
         ->render()
     )
-        ->toBe("<pre class=\"mermaid\">\n"
-            . "---\n"
-            . 'title: ' . TITLE . "\n"
-            . "---\n"
-            . '%% ' . COMMENT . "\n"
-            . "gitGraph LR:\n"
-            . "  commit\n"
-            . "  branch hotfix\n"
-            . "  checkout hotfix\n"
-            . "  commit\n"
-            . "  branch develop\n"
-            . "  checkout develop\n"
-            . "  commit id:&quot;ash&quot; tag:&quot;abc&quot;\n"
-            . "  branch featureB\n"
-            . "  checkout featureB\n"
-            . "  commit type:HIGHLIGHT\n"
-            . "  checkout main\n"
-            . "  checkout hotfix\n"
-            . "  commit\n"
-            . "  checkout develop\n"
-            . "  commit type:REVERSE\n"
-            . "  checkout featureB\n"
-            . "  commit\n"
-            . "  checkout main\n"
-            . "  merge hotfix\n"
-            . "  checkout featureB\n"
-            . "  commit\n"
-            . "  checkout develop\n"
-            . "  branch featureA\n"
-            . "  commit\n"
-            . "  checkout develop\n"
-            . "  cherrypick id:&quot;ash&quot;\n"
-            . "  merge hotfix\n"
-            . "  checkout featureA\n"
-            . "  commit\n"
-            . "  checkout featureB\n"
-            . "  commit\n"
-            . "  checkout develop\n"
-            . "  merge featureA\n"
-            . "  branch release\n"
-            . "  checkout release\n"
-            . "  commit\n"
-            . "  checkout main\n"
-            . "  commit\n"
-            . "  checkout release\n"
-            . "  merge main\n"
-            . "  checkout develop\n"
-            . "  merge release\n"
-            . '</pre>'
+        ->toBe(<<<EXPECTED
+<pre class="mermaid">
+---
+title: title
+---
+%% comment
+gitGraph LR:
+  commit
+  branch hotfix
+  checkout hotfix
+  commit
+  branch develop
+  checkout develop
+  commit id:&quot;ash&quot; tag:&quot;abc&quot;
+  branch featureB
+  checkout featureB
+  commit type:HIGHLIGHT
+  checkout main
+  checkout hotfix
+  commit
+  checkout develop
+  commit type:REVERSE
+  checkout featureB
+  commit
+  checkout main
+  merge hotfix
+  checkout featureB
+  commit
+  checkout develop
+  branch featureA
+  commit
+  checkout develop
+  cherrypick id:&quot;ash&quot;
+  merge hotfix
+  checkout featureA
+  commit
+  checkout featureB
+  commit
+  checkout develop
+  merge featureA
+  branch release
+  checkout release
+  commit
+  checkout main
+  commit
+  checkout release
+  merge main
+  checkout develop
+  merge release
+</pre>
+EXPECTED
     );
 });

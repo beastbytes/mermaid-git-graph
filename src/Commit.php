@@ -1,8 +1,4 @@
 <?php
-/**
- * @copyright Copyright © 2024 BeastBytes - All rights reserved
- * @license BSD 3-Clause
- */
 
 declare(strict_types=1);
 
@@ -15,12 +11,12 @@ final class Commit implements ItemInterface
 {
     use CommentTrait;
 
-    private const TYPE = 'commit';
+    private const string TYPE = 'commit';
 
     public function __construct(
         private readonly string $id = '',
         private readonly string $tag = '',
-        private readonly CommitType $type = CommitType::Normal
+        private readonly CommitType $type = CommitType::normal
     )
     {
     }
@@ -38,14 +34,14 @@ final class Commit implements ItemInterface
     {
         $output = [];
 
-        $this->renderComment($indentation, $output);
+        $output[] = $this->renderComment($indentation);
         $output[] = $indentation
             . self::TYPE
             . ($this->id === '' ? '' : ' id:"' . $this->id . '"')
-            . ($this->type === CommitType::Normal ? '' : ' type:' . $this->type->value)
+            . ($this->type === CommitType::normal ? '' : ' type:' . $this->type->value)
             . ($this->tag === '' ? '' : ' tag:"' . $this->tag . '"')
         ;
 
-        return implode("\n", $output);
+        return implode("\n", array_filter($output, fn($v) => !empty($v)));
     }
 }

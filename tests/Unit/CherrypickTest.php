@@ -16,4 +16,3 @@ test('Cherrypick test', function () {
 it('throws exception', function () {
     (new Cherrypick(new Commit()))->render('');
 })->throws(RuntimeException::class, 'Commit id not set');
-

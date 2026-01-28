@@ -1,8 +1,4 @@
 <?php
-/**
- * @copyright Copyright © 2024 BeastBytes - All rights reserved
- * @license BSD 3-Clause
- */
 
 declare(strict_types=1);
 
@@ -15,7 +11,7 @@ final class Branch implements ItemInterface
 {
     use CommentTrait;
 
-    private const TYPE = 'branch';
+    private const string TYPE = 'branch';
 
     public function __construct(private readonly string $name, private readonly ?int $order = null)
     {
@@ -33,13 +29,13 @@ final class Branch implements ItemInterface
     {
         $output = [];
 
-        $this->renderComment($indentation, $output);
+        $output[] = $this->renderComment($indentation);
         $output[] = $indentation
             . self::TYPE
             . ' ' . $this->name
             . ($this->order === null ? '' : ' order: ' . $this->order)
         ;
 
-        return implode("\n", $output);
+        return implode("\n", array_filter($output, fn($v) => !empty($v)));
     }
 }
