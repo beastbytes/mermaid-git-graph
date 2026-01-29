@@ -24,7 +24,6 @@ test('GitGraph test', function () {
             new Commit(),
             $develop = new Branch('develop'),
             $checkoutDevelop = new Checkout($develop),
-            $ash = new Commit('ash', 'abc'),
             $featureB = new Branch('featureB'),
             $checkoutFeatureB = new Checkout($featureB),
             new Commit(type: CommitType::highlight),
@@ -38,9 +37,8 @@ test('GitGraph test', function () {
             new Merge($hotfix),
             $checkoutFeatureB,
             new Commit(),
-            $checkoutDevelop,
             $featureA = new Branch('featureA'),
-            new Commit(),
+            $ash = new Commit('ash', 'abc'),
             $checkoutDevelop,
             new CherryPick($ash),
             new Merge($hotfix),
@@ -56,6 +54,7 @@ test('GitGraph test', function () {
             $checkoutMain,
             new Commit(),
             $checkoutRelease,
+            new Merge($featureB),
             new Merge($main),
             new Merge($develop)
         )
@@ -74,7 +73,6 @@ gitGraph LR:
   commit
   branch "develop"
   checkout "develop"
-  commit id:"ash" tag:"abc"
   branch "featureB"
   checkout "featureB"
   commit type:HIGHLIGHT
@@ -88,9 +86,8 @@ gitGraph LR:
   merge "hotfix"
   checkout "featureB"
   commit
-  checkout "develop"
   branch "featureA"
-  commit
+  commit id:"ash" tag:"abc"
   checkout "develop"
   cherry-pick id:"ash"
   merge "hotfix"
@@ -106,6 +103,7 @@ gitGraph LR:
   checkout "main"
   commit
   checkout "release"
+  merge "featureB"
   merge "main"
   merge "develop"
 </pre>

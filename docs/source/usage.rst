@@ -24,7 +24,6 @@ PHP
             new Commit(),
             $develop = new Branch('develop'),
             $checkoutDevelop = new Checkout($develop),
-            $ash = new Commit('ash', 'abc'),
             $featureB = new Branch('featureB'),
             $checkoutFeatureB = new Checkout($featureB),
             new Commit(type: CommitType::highlight),
@@ -38,9 +37,8 @@ PHP
             new Merge($hotfix),
             $checkoutFeatureB,
             new Commit(),
-            $checkoutDevelop,
             $featureA = new Branch('featureA'),
-            new Commit(),
+            $ash = new Commit('ash', 'abc'),
             $checkoutDevelop,
             new CherryPick($ash),
             new Merge($hotfix),
@@ -56,6 +54,7 @@ PHP
             $checkoutMain,
             new Commit(),
             $checkoutRelease,
+            new Merge($featureB),
             new Merge($main),
             new Merge($develop)
         )
@@ -78,7 +77,6 @@ Generated Mermaid
       commit
       branch "develop"
       checkout "develop"
-      commit id:"ash" tag:"abc"
       branch "featureB"
       checkout "featureB"
       commit type:HIGHLIGHT
@@ -92,9 +90,8 @@ Generated Mermaid
       merge "hotfix"
       checkout "featureB"
       commit
-      checkout "develop"
       branch "featureA"
-      commit
+      commit id:"ash" tag:"abc"
       checkout "develop"
       cherry-pick id:"ash"
       merge "hotfix"
@@ -110,6 +107,7 @@ Generated Mermaid
       checkout "main"
       commit
       checkout "release"
+      merge "featureB"
       merge "main"
       merge "develop"
     </pre>
@@ -129,7 +127,6 @@ Mermaid Diagram
       commit
       branch "develop"
       checkout "develop"
-      commit id:"ash" tag:"abc"
       branch "featureB"
       checkout "featureB"
       commit type:HIGHLIGHT
@@ -143,9 +140,8 @@ Mermaid Diagram
       merge "hotfix"
       checkout "featureB"
       commit
-      checkout "develop"
       branch "featureA"
-      commit
+      commit id:"ash" tag:"abc"
       checkout "develop"
       cherry-pick id:"ash"
       merge "hotfix"
@@ -161,5 +157,6 @@ Mermaid Diagram
       checkout "main"
       commit
       checkout "release"
+      merge "featureB"
       merge "main"
       merge "develop"
