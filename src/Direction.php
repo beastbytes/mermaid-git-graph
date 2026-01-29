@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\GitGraph;
 
-enum Direction
+enum Direction: string
 {
-    case LR;
-    case TB;
+    case lr = 'LR';
+    case tb = 'TB';
 }

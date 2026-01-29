@@ -18,9 +18,7 @@ final class GitGraph extends Diagram
     /** @psalm-var list<ItemInterface> $items */
     private array $items = [];
 
-    public function __construct(
-        public readonly Direction $direction = Direction::LR
-    )
+    public function __construct(public readonly Direction $direction = Direction::lr)
     {
     }
 
@@ -43,7 +41,7 @@ final class GitGraph extends Diagram
         $output = [];
 
         $output[] = $this->renderComment('');
-        $output[] = self::TYPE . ' ' . $this->direction->name . ':';
+        $output[] = self::TYPE . ' ' . $this->direction->value . ':';
         $output[] = $this->renderItems($this->items, '');
 
         return implode("\n", array_filter($output, fn($v) => !empty($v)));

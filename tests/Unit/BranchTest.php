@@ -10,9 +10,12 @@ test('Branch test', function () {
     expect($branch->getName())
         ->toBe('hotfix')
         ->and($branch->render(''))
-        ->toBe('branch hotfix')
+        ->toBe('branch "hotfix"')
         ->and($branch->withComment(COMMENT)->render(''))
-        ->toBe('%% ' . COMMENT . "\nbranch hotfix")
+        ->toBe(<<<EXPECTED
+%% comment
+branch "hotfix"
+EXPECTED)
     ;
 });
 
@@ -22,7 +25,7 @@ test('Branch with order test', function () {
     expect($branch->getName())
         ->toBe('hotfix')
         ->and($branch->render(''))
-        ->toBe('branch hotfix order: 4');
+        ->toBe('branch "hotfix" order:4');
 });
 
 it('throws exception', function () {
