@@ -15,6 +15,10 @@ Enums
 
     Diagram rendering direction
 
+    .. php:case:: bt : 'BT'
+
+        Bottom to top
+
     .. php:case:: lr : 'LR'
 
         Left to right
