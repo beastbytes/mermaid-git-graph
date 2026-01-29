@@ -3,7 +3,7 @@ CherryPick Class
 
 .. php:class:: CherryPick
 
-    Represents a CherryPick in a Kanban diagram
+    Represents a CherryPick
 
     .. php:method:: __construct(Commit $commit)
 
