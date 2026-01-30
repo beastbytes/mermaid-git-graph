@@ -10,9 +10,10 @@ Branch Class
         Creates a new Branch
 
         :param string $name: The Branch name
-        :param ?int $id: The Branch rendering order (default: render in the order defined)
+        :param ?int $order: The Branch rendering order (default: render in the order defined)
         :returns: A new instance of ``Branch``
         :rtype: Branch
+        :throws: InvalidArgumentException if $order < 1
 
     .. php:method:: withComment(string $comment)
 

@@ -12,6 +12,7 @@ CherryPick Class
         :param Commit $commit: The Commit to cherrypick
         :returns: A new instance of ``CherryPick``
         :rtype: CherryPick
+        :throws: InvalidArgumentException if $commit does not have an id
 
     .. php:method:: withComment(string $comment)
 
